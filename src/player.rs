@@ -18,11 +18,24 @@ enum Facing {
     Right
 }
 
+#[derive(Component, Deref, DerefMut)]
+struct AnimationTimer(Timer);
+
+#[derive(Component)]
+struct AnimationState{
+    facing: Facing,
+    moving: bool,
+    was_moving: bool
+}
+
 pub fn move_player(
     input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
-    mut player_transform: Single<&mut Transform, With<Player>>,
+    mut player: Query<(&mut Transform, &mut AnimationState),With<Player>>,
 ) {
+    let Ok((mut transform, mut animation)) = player.single_mut() else{
+        return;
+    };
     let mut direction = Vec2::ZERO;
     
     if input.pressed(KeyCode::ArrowLeft){
@@ -39,9 +52,19 @@ pub fn move_player(
     }
 
     if direction != Vec2::ZERO{
-        let speed = 300.0;
-        let delta = direction.normalize() * speed * time.delta_secs();
-        player_transform.translation.x += delta.x;
-        player_transform.translation.y += delta.y;
+        let delta = direction.normalize() * MOVE_SPEED * time.delta_secs();
+        transform.translation.x += delta.x;
+        transform.translation.y += delta.y;
+        animation.moving = true;
+
+        if direction.x.abs() > direction.y.abs() {
+            animation.facing = if direction.x > 0.0 { Facing::Right } else { Facing::Left};
+        } else {
+            animation.facing = if direction.y > 0.0 { Facing::Up } else { Facing::Down};
+        }
+    }else{
+        animation.moving = false;
     }
+
+
 }
