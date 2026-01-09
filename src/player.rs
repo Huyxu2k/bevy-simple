@@ -1,6 +1,5 @@
 use bevy::prelude::*;
 
-
 // Atlas constants
 const TITLE_SIZE: u32 = 64;
 const WALK_FRAMES: usize = 9;
@@ -15,56 +14,67 @@ enum Facing {
     Up,
     Left,
     Down,
-    Right
+    Right,
 }
 
 #[derive(Component, Deref, DerefMut)]
 struct AnimationTimer(Timer);
 
 #[derive(Component)]
-struct AnimationState{
+struct AnimationState {
     facing: Facing,
     moving: bool,
-    was_moving: bool
+    was_moving: bool,
 }
 
 pub fn move_player(
     input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
-    mut player: Query<(&mut Transform, &mut AnimationState),With<Player>>,
+    mut player: Query<(&mut Transform, &mut AnimationState), With<Player>>
 ) {
-    let Ok((mut transform, mut animation)) = player.single_mut() else{
+    let Ok((mut transform, mut animation)) = player.single_mut() else {
         return;
     };
     let mut direction = Vec2::ZERO;
-    
-    if input.pressed(KeyCode::ArrowLeft){
+
+    if input.pressed(KeyCode::ArrowLeft) {
         direction.x -= 1.0;
-    }
-    else if input.pressed(KeyCode::ArrowRight) {
+    } else if input.pressed(KeyCode::ArrowRight) {
         direction.x += 1.0;
-    }
-    else if input.pressed(KeyCode::ArrowUp) {
+    } else if input.pressed(KeyCode::ArrowUp) {
         direction.y += 1.0;
-    }
-     else if input.pressed(KeyCode::ArrowDown) {
+    } else if input.pressed(KeyCode::ArrowDown) {
         direction.y -= 1.0;
     }
 
-    if direction != Vec2::ZERO{
+    if direction != Vec2::ZERO {
         let delta = direction.normalize() * MOVE_SPEED * time.delta_secs();
         transform.translation.x += delta.x;
         transform.translation.y += delta.y;
         animation.moving = true;
 
         if direction.x.abs() > direction.y.abs() {
-            animation.facing = if direction.x > 0.0 { Facing::Right } else { Facing::Left};
+            animation.facing = if direction.x > 0.0 { Facing::Right } else { Facing::Left };
         } else {
-            animation.facing = if direction.y > 0.0 { Facing::Up } else { Facing::Down};
+            animation.facing = if direction.y > 0.0 { Facing::Up } else { Facing::Down };
         }
-    }else{
+    } else {
         animation.moving = false;
     }
+}
 
+pub fn animate_player(
+    time: Res<Time>,
+    mut query: Query<(&mut AnimationState, &mut AnimationTimer, &mut Sprite), With<Player>>
+) {
+    let Ok((mut animation, mut timer, mut sprite)) = query.single_mut() else {
+        return;;
+    };
 
+    let atlas = match  sprite.texture_atlas.as_mut() {
+        Some(result) => result,
+        None => return,
+    };
+
+    
 }
