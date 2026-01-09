@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 
 mod player;
+mod duck;
 
 use player::{Player, move_player};
 
