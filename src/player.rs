@@ -1,11 +1,23 @@
 use bevy::prelude::*;
 
-// Atlas constants
+// atlas constants
 const TITLE_SIZE: u32 = 64;
 const WALK_FRAMES: usize = 9;
 const MOVE_SPEED: f32 = 140.0;
 const ANIM_DT: f32 = 0.1;
 
+const PLAYER_Z: f32 = 20.0;
+
+// player plugin
+pub struct PlayerPlugin;
+impl Plugin for PlayerPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(Startup, spawn_player)
+            .add_systems(Update, (move_player, animate_player));
+    }
+}
+
+// object
 #[derive(Component)]
 struct Player;
 
@@ -25,15 +37,6 @@ struct AnimationState {
     facing: Facing,
     moving: bool,
     was_moving: bool,
-}
-
-// player plugin
-pub struct PlayerPlugin;
-impl Plugin for PlayerPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(Startup, spawn_player)
-            .add_systems(Update, (move_player, animate_player));
-    }
 }
 
 // behavior function
@@ -78,7 +81,7 @@ fn spawn_player(
     asset_server: Res<AssetServer>,
     mut atlas_layouts: ResMut<Assets<TextureAtlasLayout>>
 ){
-    let texture: Handle<Image> = asset_server.load("male_character-spritesheet.png");
+    let texture= asset_server.load::<Image>("male_character-spritesheet.png");
     let layout = atlas_layouts.add(TextureAtlasLayout::from_grid(
         UVec2::splat(TITLE_SIZE), 
         WALK_FRAMES as u32, 
@@ -95,7 +98,7 @@ fn spawn_player(
             texture, 
             TextureAtlas { layout, index: start_index }
         ),
-        Transform::from_translation(Vec3::ZERO),
+        Transform::from_translation(Vec3::new(0., 0., PLAYER_Z)).with_scale(Vec3::splat(0.8)),
         Player,
         AnimationState { facing, moving: false, was_moving: false },
         AnimationTimer(Timer::from_seconds(ANIM_DT, TimerMode::Repeating)),
