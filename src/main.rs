@@ -1,6 +1,6 @@
+mod duck;
 mod map;
 mod player;
-mod duck;
 
 use bevy::{
     prelude::*,
@@ -18,10 +18,10 @@ fn main() {
         .add_plugins(
             DefaultPlugins
                 .set(AssetPlugin {
-                 file_path: "src/assets".into(),
-                ..default()
+                    file_path: "src/assets".into(),
+                    ..default()
                 })
-                 .set(WindowPlugin {
+                .set(WindowPlugin {
                     primary_window: Some(Window {
                         resolution: WindowResolution::new(map_size.x as u32, map_size.y as u32),
                         resizable: false,
