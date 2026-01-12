@@ -1,6 +1,6 @@
 mod duck;
 mod map;
-mod player;
+mod characters;
 
 use bevy::{
     prelude::*,
@@ -9,7 +9,6 @@ use bevy::{
 use bevy_procedural_tilemaps::prelude::*;
 
 use map::generate::{map_pixel_dimensions, setup_generator};
-use player::PlayerPlugin;
 
 fn main() {
     let map_size = map_pixel_dimensions();
@@ -32,8 +31,8 @@ fn main() {
                 .set(ImagePlugin::default_nearest()),
         )
         .add_plugins(ProcGenSimplePlugin::<Cartesian3D, Sprite>::default())
+        .add_plugins(characters::CharactersPlugin)
         .add_systems(Startup, (setup_camera, setup_generator))
-        .add_plugins(PlayerPlugin)
         .run();
 }
 
