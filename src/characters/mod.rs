@@ -2,6 +2,7 @@ pub mod config;
 pub mod animation;
 pub mod movement;
 pub mod spawn;
+pub mod state;
 
 use bevy::prelude::*;
 use bevy_common_assets::ron::RonAssetPlugin;
@@ -17,7 +18,7 @@ impl Plugin for CharactersPlugin  {
         .init_resource::<spawn::CurrentCharacterIndex>()
         .add_systems(Startup, spawn::spawn_player)
         .add_systems(Update, (
-            spawn::initialize_player_character,
+            //spawn::initialize_player_character,
             spawn::switch_character,
             movement::move_player,
             movement::update_jump_state,
