@@ -1,7 +1,7 @@
 use bevy::{prelude::*, sprite::Anchor};
 use bevy_procedural_tilemaps::prelude::*;
 
-use crate::map::titlemap::TITLE_MAP;
+use crate::map::tilemap::TILE_MAP;
 
 #[derive(Clone)]
 pub struct SpawnableAsset {
@@ -49,9 +49,9 @@ pub fn prepare_tilemap_handles(
     tilemap_file: &str,
 ) -> TilemapHandles {
     let image = asset_server.load::<Image>(format!("{assets_directory}/{tilemap_file}"));
-    let mut layout = TextureAtlasLayout::new_empty(TITLE_MAP.atlas_size());
-    for index in 0..TITLE_MAP.sprites.len()  {
-        layout.add_texture(TITLE_MAP.sprite_rect(index));
+    let mut layout = TextureAtlasLayout::new_empty(TILE_MAP.atlas_size());
+    for index in 0..TILE_MAP.sprites.len()  {
+        layout.add_texture(TILE_MAP.sprite_rect(index));
     }
 
     let layout = atlas_layouts.add(layout);
@@ -73,7 +73,7 @@ pub fn load_assets(
                 component_spawner,
             } = asset_def;
 
-            let Some(atlas_index) = TITLE_MAP.sprite_index(sprite_name) else {
+            let Some(atlas_index) = TILE_MAP.sprite_index(sprite_name) else {
                 panic!("Unknown atlas sprite '{}'",sprite_name);
             };
 

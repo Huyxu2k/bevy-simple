@@ -14,11 +14,11 @@ const TILEMAP_FILE: &str = "tilemap.png";
 
 pub const TILE_SIZE: f32 = 32.;
 
-const NODE_SIZE: Vec3 = Vec3::ONE;
+const NODE_SIZE: Vec3 = Vec3::new(TILE_SIZE, TILE_SIZE, 1.);
 
 const ASSETS_SCALE: Vec3 = Vec3::ONE;
 
-const GRID_Z: u32 = 1;
+const GRID_Z: u32 = 4;
 
 pub fn map_pixel_dimensions() -> Vec2 {
     Vec2::new(TILE_SIZE * GRID_X as f32, TILE_SIZE * GRID_Y as f32)

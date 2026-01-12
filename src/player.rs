@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 // atlas constants
-const TITLE_SIZE: u32 = 64;
+const TILE_SIZE: u32 = 64;
 const WALK_FRAMES: usize = 9;
 const MOVE_SPEED: f32 = 140.0;
 const ANIM_DT: f32 = 0.1;
@@ -83,7 +83,7 @@ fn spawn_player(
 ){
     let texture= asset_server.load::<Image>("male_character-spritesheet.png");
     let layout = atlas_layouts.add(TextureAtlasLayout::from_grid(
-        UVec2::splat(TITLE_SIZE), 
+        UVec2::splat(TILE_SIZE), 
         WALK_FRAMES as u32, 
         12, 
         None, 
