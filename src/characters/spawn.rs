@@ -1,13 +1,13 @@
 use bevy::prelude::*;
-
 use crate::characters::animation::*;
 use crate::characters::config::{CharacterEntry, CharactersList};
-use crate::characters::facing::Facing;
-use crate::characters::input::Player;
-use crate::characters::physics::Velocity;
-use crate::characters::state::CharacterState;
-use crate::config::player::{PLAYER_SCALE, PLAYER_Z_POSITION};
-use crate::characters::collider::Collider;
+use crate::characters::input::Player;  // Changed from movement::Player
+use crate::characters::state::CharacterState;  // Line update alert
+use crate::characters::physics::Velocity;  // Line update alert
+use crate::characters::facing::Facing;  // Line update alert
+use crate::characters::collider::Collider; 
+use crate::config::player::{PLAYER_SCALE, PLAYER_Z_POSITION}; 
+
 
 #[derive(Resource, Default)]
 pub struct CurrentCharacterIndex {
@@ -24,12 +24,12 @@ fn create_character_atlas_layout(
     character_entry: &CharacterEntry,
 ) -> Handle<TextureAtlasLayout> {
     let max_row = character_entry.calculate_max_animation_row();
-
+    
     atlas_layouts.add(TextureAtlasLayout::from_grid(
-        UVec2::splat(character_entry.tile_size), 
-        character_entry.atlas_columns as u32, 
-        (max_row + 1) as u32, 
-        None, 
+        UVec2::splat(character_entry.tile_size),
+        character_entry.atlas_columns as u32,
+        (max_row + 1) as u32,
+        None,
         None,
     ))
 }
@@ -38,7 +38,7 @@ pub fn spawn_player(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
     mut character_index: ResMut<CurrentCharacterIndex>,
-){
+) {
     // Load the characters list
     let characters_list_handle: Handle<CharactersList> = asset_server.load("characters/characters.ron");
     
@@ -96,9 +96,9 @@ pub fn initialize_player_character(
         
         commands.entity(entity).insert((
             AnimationController::default(),
-            CharacterState::default(),
-            Velocity::default(),
-            Facing::default(),
+            CharacterState::default(),   // Line update alert
+            Velocity::default(),         // Line update alert  
+            Facing::default(),           // Line update alert
             Collider::default(),
             AnimationTimer(Timer::from_seconds(DEFAULT_ANIMATION_FRAME_TIME, TimerMode::Repeating)),
             character_entry.clone(),

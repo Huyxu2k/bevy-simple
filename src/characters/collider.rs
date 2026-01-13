@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::collision::map::CollisionMap;
+use crate::collision::CollisionMap;
 use crate::characters::physics::Velocity;
 use crate::config::player::{COLLIDER_RADIUS};
 

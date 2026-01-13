@@ -1,11 +1,10 @@
 use bevy::prelude::*;
-
 use super::{
     state::CharacterState,
     physics::Velocity,
     facing::Facing,
     config::CharacterEntry,
-    animation::{AnimationController, AnimationTimer}
+    animation::{AnimationController, AnimationTimer},
 };
 
 #[derive(Component)]
@@ -18,11 +17,11 @@ fn read_movement_input(input: &ButtonInput<KeyCode>) -> Vec2 {
         (KeyCode::ArrowUp, Vec2::Y),
         (KeyCode::ArrowDown, Vec2::NEG_Y),
     ];
-
+    
     MOVEMENT_KEYS.iter()
-                .filter(|(key, _)| input.pressed(*key))
-                .map(|(_, dir)| *dir)
-                .sum() 
+        .filter(|(key, _)| input.pressed(*key))
+        .map(|(_, dir)| *dir)
+        .sum()
 }
 
 fn determine_new_state(

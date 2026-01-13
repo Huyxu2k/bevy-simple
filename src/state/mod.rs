@@ -1,6 +1,6 @@
-pub mod game_state;
-pub mod loading;
-pub mod pause;
+mod game_state;
+mod loading;
+mod pause;
 
 use bevy::prelude::*;
 use crate::characters::spawn::CharactersListResource;

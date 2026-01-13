@@ -1,12 +1,10 @@
 use bevy::prelude::*;
 use std::collections::{HashMap, hash_map::Entry};
 
-use crate::config::map::{GRID_X, GRID_Y, TILE_SIZE};
+use super::{CollisionMap, TileMarker, TileType};
+use crate::config::map::{TILE_SIZE, GRID_X, GRID_Y};
 
-use super::map::CollisionMap;
-use super::tile_type::{TileType, TileMarker};
-
-
+/// Resource to track if collision map has been built.
 #[derive(Resource, Default, PartialEq, Eq)]
 pub struct CollisionMapBuilt(pub bool);
 

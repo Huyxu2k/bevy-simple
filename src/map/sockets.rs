@@ -6,13 +6,13 @@ pub struct TerrainSockets {
     pub grass: GrassLayerSockets,
     pub yellow_grass: YellowGrassLayerSockets,
     pub water: WaterLayerSockets,
-    pub props: PropsLayerSockets,
+    pub props: PropsLayerSockets, // Add this line
 }
 
 pub struct DirtLayerSockets {
-    pub layer_up: Socket,
-    pub layer_down: Socket,
-    pub material: Socket,
+    pub layer_up: Socket,      // What can sit on top of dirt
+    pub layer_down: Socket,     // What dirt can sit on
+    pub material: Socket,       // What dirt connects to horizontally
 }
 
 pub struct GrassLayerSockets {
@@ -47,9 +47,11 @@ pub struct PropsLayerSockets {
     pub big_tree_2_base: Socket,
 }
 
+
+
 pub fn create_sockets(socket_collection: &mut SocketCollection) -> TerrainSockets {
     let mut new_socket = || -> Socket { socket_collection.create() };
-
+    
     let sockets = TerrainSockets {
         dirt: DirtLayerSockets {
             layer_up: new_socket(),
@@ -59,8 +61,8 @@ pub fn create_sockets(socket_collection: &mut SocketCollection) -> TerrainSocket
         void: new_socket(),
         grass: GrassLayerSockets {
             layer_up: new_socket(),
-            layer_down: new_socket(),
             material: new_socket(),
+            layer_down: new_socket(),
             void_and_grass: new_socket(),
             grass_and_void: new_socket(),
             grass_fill_up: new_socket(),
@@ -86,6 +88,5 @@ pub fn create_sockets(socket_collection: &mut SocketCollection) -> TerrainSocket
             big_tree_2_base: new_socket(),
         },
     };
-
     sockets
 }

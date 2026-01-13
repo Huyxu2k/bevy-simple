@@ -1,12 +1,17 @@
-pub mod tile_type;
-pub mod map;
-pub mod systems;
+mod tile_type;
+mod map;
+mod systems;
 
 #[cfg(debug_assertions)]
-pub mod debug;
+mod debug;
 
 use bevy::prelude::*;
-use crate::{collision::{map::CollisionMap, systems::CollisionMapBuilt}, state::GameState};
+use crate::state::GameState;
+
+// Re-export commonly used types
+pub use tile_type::{TileType, TileMarker};
+pub use map::CollisionMap;
+pub use systems::CollisionMapBuilt;
 
 #[cfg(debug_assertions)]
 pub use debug::DebugCollisionEnabled;
@@ -17,10 +22,10 @@ impl Plugin for CollisionPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<CollisionMapBuilt>()
             .add_systems(
-                Update, 
+                Update,
                 systems::build_collision_map
-                                    .run_if(resource_equals(CollisionMapBuilt(false)))
-                                    .run_if(in_state(GameState::Playing))
+                    .run_if(resource_equals(CollisionMapBuilt(false)))
+                    .run_if(in_state(GameState::Playing)),
             );
 
         // Debug systems - only in debug builds

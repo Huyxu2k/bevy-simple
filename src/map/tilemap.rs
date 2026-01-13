@@ -1,25 +1,50 @@
 use bevy::math::{URect, UVec2};
 
-pub struct TilemapSprite{
+pub struct TilemapSprite {
     pub name: &'static str,
     pub pixel_x: u32,
-    pub pixel_y: u32
+    pub pixel_y: u32,
 }
 
+pub struct TilemapDefinition {
+    pub tile_width: u32,
+    pub tile_height: u32,
+    pub atlas_width: u32,
+    pub atlas_height: u32,
+    pub sprites: &'static [TilemapSprite],
+}
 
-pub const TILE_MAP: TilemapDefinition = TilemapDefinition {
-    title_width: 32,
-    title_height: 32,
+impl TilemapDefinition {
+    pub const fn tile_size(&self) -> UVec2 {
+        UVec2::new(self.tile_width, self.tile_height)
+    }
+
+    pub const fn atlas_size(&self) -> UVec2 {
+        UVec2::new(self.atlas_width, self.atlas_height)
+    }
+
+    pub fn sprite_index(&self, name: &str) -> Option<usize> {
+        self.sprites.iter().position(|sprite| sprite.name == name)
+    }
+
+    pub fn sprite_rect(&self, index: usize) -> URect {
+        let sprite = &self.sprites[index];
+        let min = UVec2::new(sprite.pixel_x, sprite.pixel_y);
+        URect::from_corners(min, min + self.tile_size())
+    }
+}
+
+pub const TILEMAP: TilemapDefinition = TilemapDefinition {
+    tile_width: 32,
+    tile_height: 32,
     atlas_width: 256,
     atlas_height: 320,
     sprites: &[
-        // dirt 
-        TilemapSprite {
+          TilemapSprite {
             name: "dirt",
             pixel_x: 128,
             pixel_y: 0,
         },
-        // green grass
         TilemapSprite {
             name: "green_grass",
             pixel_x: 160,
@@ -85,7 +110,6 @@ pub const TILE_MAP: TilemapDefinition = TilemapDefinition {
             pixel_x: 96,
             pixel_y: 96,
         },
-        // yellow grass
         TilemapSprite {
             name: "yellow_grass",
             pixel_x: 0,
@@ -151,7 +175,6 @@ pub const TILE_MAP: TilemapDefinition = TilemapDefinition {
             pixel_x: 192,
             pixel_y: 288,
         },
-        // water
         TilemapSprite {
             name: "water",
             pixel_x: 32,
@@ -217,7 +240,6 @@ pub const TILE_MAP: TilemapDefinition = TilemapDefinition {
             pixel_x: 224,
             pixel_y: 224,
         },
-        // tree
         TilemapSprite {
             name: "big_tree_1_tl",
             pixel_x: 0,
@@ -325,31 +347,3 @@ pub const TILE_MAP: TilemapDefinition = TilemapDefinition {
         },
     ]
 };
-
-pub  struct TilemapDefinition{
-    pub title_width: u32,
-    pub title_height: u32,
-    pub atlas_width: u32,
-    pub atlas_height: u32,
-    pub sprites: & 'static [TilemapSprite]
-}
-
-impl TilemapDefinition {
-    pub const fn title_size(&self) -> UVec2{
-        UVec2::new(self.title_width, self.title_height)
-    }
-
-    pub const fn atlas_size(&self) -> UVec2{
-        UVec2::new(self.atlas_width, self.atlas_height)
-    }
-    
-    pub fn sprite_index(&self, name: &str) -> Option<usize>{
-        self.sprites.iter().position(|item| item.name == name)
-    }
-
-    pub fn sprite_rect(&self, index: usize) -> URect{
-        let sprite = &self.sprites[index];
-        let min = UVec2::new(sprite.pixel_x, sprite.pixel_y);
-        URect::from_corners(min, min + self.title_size())
-    }
-}

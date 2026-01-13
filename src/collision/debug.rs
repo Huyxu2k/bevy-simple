@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use super::map::CollisionMap;
+use super::CollisionMap;
 use crate::characters::input::Player;
 use crate::characters::collider::Collider;
 

@@ -1,11 +1,11 @@
+// characters/config.rs
 use bevy::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, Default)]
 pub enum AnimationType {
-    #[default]
+    #[default] 
     Walk,
     Run,
     Jump
@@ -16,7 +16,7 @@ pub struct AnimationDefinition {
     pub start_row: usize,
     pub frame_count: usize,
     pub frame_time: f32,
-    pub directional: bool
+    pub directional: bool, // true = 4 rows (one per direction), false = 1 row
 }
 
 #[derive(Component, Asset, TypePath, Debug, Clone, Serialize, Deserialize)]
@@ -28,14 +28,14 @@ pub struct CharacterEntry {
     pub texture_path: String,
     pub tile_size: u32,
     pub atlas_columns: usize,
-    pub animations: HashMap<AnimationType, AnimationDefinition>
+    pub animations: HashMap<AnimationType, AnimationDefinition>,
 }
 
 impl CharacterEntry {
     pub fn calculate_max_animation_row(&self) -> usize {
         self.animations
             .values()
-            .map(|i| if i.directional { i.start_row + 3} else { i.start_row})
+            .map(|def| if def.directional { def.start_row + 3 } else { def.start_row })
             .max()
             .unwrap_or(0)
     }
@@ -43,5 +43,5 @@ impl CharacterEntry {
 
 #[derive(Asset, TypePath, Debug, Clone, Serialize, Deserialize)]
 pub struct CharactersList {
-    pub characters: Vec<CharacterEntry>
+    pub characters: Vec<CharacterEntry>,
 }
