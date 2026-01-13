@@ -8,3 +8,9 @@ pub enum CharacterState {
     Running,
     Jumping
 }
+
+impl CharacterState {
+    pub fn is_grounded(&self) -> bool{
+        matches!(self, CharacterState::Idle | CharacterState::Walking | CharacterState::Running )
+    }
+}
